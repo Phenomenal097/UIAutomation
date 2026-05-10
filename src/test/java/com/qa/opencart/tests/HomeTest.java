@@ -1,27 +1,14 @@
-import com.microsoft.playwright.Page;
-import com.qa.opencart.pages.HomePage;
-import com.qa.opencart.playwrightfactory.PlaywrightFactory;
+package com.qa.opencart.tests;
+
+import com.qa.opencart.base.BaseTest;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
-public class HomePageTest {
-    Page page;
-    HomePage homePage;
-    PlaywrightFactory playwrightFactory;
-
-    @BeforeClass
-    public void setup() {
-        playwrightFactory = new PlaywrightFactory();
-        page = playwrightFactory.initBrowser("chromium");
-        homePage = new HomePage(page);
-    }
+public class HomeTest extends BaseTest {
 
     @BeforeMethod
     public void navigateToHomePage() {
-        page.navigate("https://naveenautomationlabs.com/opencart/");
+        page.navigate(properties.getProperty("url"));
     }
 
     @Test
@@ -33,7 +20,7 @@ public class HomePageTest {
     @Test
     public void homePageUrlTest() {
         String url = page.url();
-        Assert.assertEquals(url, "https://naveenautomationlabs.com/opencart/");
+        Assert.assertEquals(url, properties.getProperty("url"));
     }
 
     @DataProvider
@@ -58,5 +45,4 @@ public class HomePageTest {
         String cartEmptyText = homePage.getEmptyCartTextMsg();
         Assert.assertEquals(cartEmptyText, "Your shopping cart is empty!");
     }
-
 }

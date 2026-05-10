@@ -2,15 +2,20 @@ package com.qa.opencart.playwrightfactory;
 
 import com.microsoft.playwright.*;
 
-import java.lang.classfile.instruction.SwitchCase;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
 
 public class PlaywrightFactory {
     Playwright playwright;
     Browser browser;
     BrowserContext browserContext;
     Page page;
+    Properties properties;
 
-    public Page initBrowser(String browserName) {
+    public Page initBrowser(Properties properties) {
+        String browserName = properties.getProperty("browser");
         System.out.println("Initializing Playwright Browser " + browserName);
         playwright = Playwright.create();
 
@@ -40,5 +45,18 @@ public class PlaywrightFactory {
         browserContext = browser.newContext();
         page = browserContext.newPage();
         return page;
+    }
+
+    public Properties setConfig() {
+        try {
+            FileInputStream file = new FileInputStream("src/test/resources/config/config.properties");
+            properties = new Properties();
+            properties.load(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return properties;
     }
 }

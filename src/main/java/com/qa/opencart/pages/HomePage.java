@@ -14,6 +14,8 @@ public class HomePage {
     private final Locator emptyCartTextMsg;
     private final Locator addToCartBtnText;
     private final Locator featuredItemsHeader;
+    private final Locator myAccountsBtn;
+    private final Locator loginBtn;
 
     public HomePage(Page page) {
         this.page = page;
@@ -24,6 +26,8 @@ public class HomePage {
         emptyCartTextMsg = page.locator("//p[text()='Your shopping cart is empty!']");
         addToCartBtnText = page.locator("//span[@id='cart-total']");
         featuredItemsHeader = page.locator("//h3[text()='Featured']");
+        myAccountsBtn = page.locator("//span[text()='My Account']");
+        loginBtn = page.locator("//li/child::a[text()='Login']");
     }
 
     /**
@@ -85,5 +89,25 @@ public class HomePage {
      */
     public String getFeaturedItemsHeader() {
         return featuredItemsHeader.innerText();
+    }
+
+    /**
+     * Click on accounts btn
+     */
+    public void clickAccountsBtn() {
+        myAccountsBtn.click();
+    }
+
+    /**
+     * Click on login button
+     *
+     * @return instance of LoginPage
+     */
+    public LoginPage navigateToLoginPage() {
+        clickAccountsBtn();
+        loginBtn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        loginBtn.click();
+        page.waitForLoadState(LoadState.NETWORKIDLE);
+        return new LoginPage(page); //This is through page chaining
     }
 }

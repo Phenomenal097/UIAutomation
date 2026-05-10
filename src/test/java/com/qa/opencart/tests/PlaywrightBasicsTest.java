@@ -1,3 +1,5 @@
+package com.qa.opencart.tests;
+
 import com.microsoft.playwright.*;
 
 import java.nio.file.Paths;
