@@ -22,6 +22,7 @@ public class LoginTest extends BaseTest {
     public void loginTest() {
         loginPage.login(properties.getProperty("username"), properties.getProperty("password"));
         Assert.assertTrue(loginPage.isLoggedIn());
+        loginPage.logout();
     }
 
 }

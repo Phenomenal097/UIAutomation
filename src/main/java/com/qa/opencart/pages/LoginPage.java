@@ -13,7 +13,7 @@ public class LoginPage {
     private final Locator loginHeader;
     private final Locator logout;
 
-    LoginPage(Page page) {
+    public LoginPage(Page page) {
         this.page = page;
         emailLabel = page.locator("//input[@id='input-email']");
         passwordLabel = page.locator("//input[@id='input-password']");

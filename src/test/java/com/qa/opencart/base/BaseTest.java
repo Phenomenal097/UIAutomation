@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 public class BaseTest {
-    PlaywrightFactory playwrightFactory;
+    protected PlaywrightFactory playwrightFactory;
     protected Page page;
     protected HomePage homePage;
     protected LoginPage loginPage;

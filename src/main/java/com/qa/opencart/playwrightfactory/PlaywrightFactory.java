@@ -1,50 +1,67 @@
 package com.qa.opencart.playwrightfactory;
 
 import com.microsoft.playwright.*;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
 public class PlaywrightFactory {
-    Playwright playwright;
-    Browser browser;
-    BrowserContext browserContext;
-    Page page;
     Properties properties;
+
+    public static ThreadLocal<Playwright> playwrightThreadLocal = new ThreadLocal<>();
+    public static ThreadLocal<Browser> browserThreadLocal = new ThreadLocal<>();
+    public static ThreadLocal<BrowserContext> browserContextThreadLocal = new ThreadLocal<>();
+    public static ThreadLocal<Page> pageThreadLocal = new ThreadLocal<>();
+
+    //custom getter methods for thread local
+    public static Playwright getPlaywright() {
+        return playwrightThreadLocal.get();
+    }
+
+    public static Browser getBrowser() {
+        return browserThreadLocal.get();
+    }
+
+    public static BrowserContext getBrowserContext() {
+        return browserContextThreadLocal.get();
+    }
+
+    public static Page getPage() {
+        return pageThreadLocal.get();
+    }
 
     public Page initBrowser(Properties properties) {
         String browserName = properties.getProperty("browser");
+        boolean isHeadless = Boolean.parseBoolean(properties.getProperty("headless", "true"));
         System.out.println("Initializing Playwright Browser " + browserName);
-        playwright = Playwright.create();
+        playwrightThreadLocal.set(Playwright.create());
 
         switch(browserName.toLowerCase()) {
 
             case "chromium":
-                browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+                browserThreadLocal.set(getPlaywright().chromium().launch(new BrowserType.LaunchOptions().setHeadless(isHeadless)));
                 break;
 
             case "firefox":
-                browser =  playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
+                browserThreadLocal.set(getPlaywright().firefox().launch(new BrowserType.LaunchOptions().setHeadless(isHeadless)));
                 break;
 
             case "safari":
-                browser = playwright.webkit().launch(new BrowserType.LaunchOptions().setHeadless(false));
+                browserThreadLocal.set(getPlaywright().webkit().launch(new BrowserType.LaunchOptions().setHeadless(isHeadless)));
                 break;
 
             case "chrome":
-                browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false));
+                browserThreadLocal.set(getPlaywright().chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(isHeadless)));
                 break;
 
             default:
-                System.out.println("Invalid Browser Name " + browserName);
-                break;
+                throw new IllegalArgumentException("Invalid browser name: " + browserName);
         }
 
-        browserContext = browser.newContext();
-        page = browserContext.newPage();
-        return page;
+        browserContextThreadLocal.set(getBrowser().newContext());
+        pageThreadLocal.set(getBrowserContext().newPage());
+        return getPage();
     }
 
     public Properties setConfig() {
