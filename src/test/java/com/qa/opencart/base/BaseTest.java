@@ -18,10 +18,14 @@ public class BaseTest {
     protected LoginPage loginPage;
     protected Properties properties;
 
+    @Parameters("browser")
     @BeforeClass
-    public void setup() {
+    public void setup(String browserName) {
         playwrightFactory = new PlaywrightFactory();
         properties = playwrightFactory.setConfig();
+        if(browserName != null) {
+            properties.setProperty("browser", browserName);
+        }
         page = playwrightFactory.initBrowser(properties);
         homePage = new HomePage(page);
 
