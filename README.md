@@ -54,22 +54,36 @@ UIAutomation/
 
 Clone the repository:
 
+```
 git clone https://github.com/Phenomenal097/UIAutomation.git
 cd UIAutomation
+```
 
-Install project dependencies: mvn clean install
+Install project dependencies:
 
+```
+mvn clean install
+```
 
 ## Run Tests
 
-Run all tests: mvn test
+Run all tests:
 
-Run tests using TestNG suite: mvn test -DsuiteXmlFile=testng.xml
+```
+mvn test
+```
+
+Run tests using TestNG suite:
+
+```
+mvn test -DsuiteXmlFile=testng.xml
+```
 
 ## Generate Allure Report
 
+```
 allure serve target/allure-results
-
+```
 
 ## Docker
 
@@ -78,6 +92,7 @@ Build Docker image:
 ```
 docker build -t ui-automation .
 ```
+
 Run tests in Docker:
 
 ```
@@ -97,3 +112,7 @@ Run Tests
 Generate Report
 Publish Report
 ```
+
+## Author
+
+[Phenomenal097](https://github.com/Phenomenal097)
